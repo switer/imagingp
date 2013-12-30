@@ -1,0 +1,30 @@
+{
+  "name": "imaging-png",
+  "version": "0.0.0",
+  "description": "imaging-png\r ===========",
+  "main": "imaging-png.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/switer/imaging-png.git"
+  },
+  "keywords": [
+    "imaing",
+    "terminal",
+    "image",
+    "png",
+    "render"
+  ],
+  "author": "switer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/switer/imaging-png/issues"
+  },
+  "dependencies": {
+    "colors": "~0.6.2",
+    "chainjs": "0.0.2",
+    "pngjs": "~0.4.0"
+  }
+}
