@@ -1,7 +1,7 @@
 {
   "name": "imaging-png",
-  "version": "0.0.0",
-  "description": "imaging-png\r ===========",
+  "version": "0.0.1",
+  "description": "imaging for png",
   "main": "imaging-png.js",
   "scripts": {
     "test": "npm test"
@@ -25,6 +25,8 @@
   "dependencies": {
     "colors": "~0.6.2",
     "chainjs": "0.0.2",
-    "pngjs": "~0.4.0"
+    "pngjs": "~0.4.0",
+    "pkginfo": "~0.3.0",
+    "commander": "~2.1.0"
   }
 }
