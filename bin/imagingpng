@@ -31,5 +31,4 @@ var options = util.setParams(program, {
     left: config.defaultLeft
 });
 
-
 converter.convert(imgURL, options)

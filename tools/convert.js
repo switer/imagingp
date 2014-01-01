@@ -11,6 +11,7 @@
 var fs = require('fs'),
     color = require('colors'),
     Chain = require('chainjs'),
+    thumb = require('./thumb'),
     PNG = require('pngjs').PNG;
 
 var config = {
@@ -64,17 +65,26 @@ var converter = {
             .pipe(new PNG({
                 filterType: 4
             }))
-            .on('parsed', function(data) {
-                var imgData = data,
-                    ctx = this;
+            .on('parsed', function() {
+                var ctx = this;
 
-                var colorData = _this.process(ctx.height, ctx.width, imgData);
-
-                Chain(_this.render.bind(_this), colorData, {
-                    height: ctx.height,
-                    width: ctx.width,
-                    pix: options.char
+                Chain(function (chain) {
+                    // thumb.thumbnailer(ctx, 30, 4, function (data) {
+                    //     chain.next(data);
+                    // });
+                    chain.next(ctx);
                 })
+                .then(function (chain, imgData) {
+
+                    var colorData = _this.process(imgData.height, imgData.width, imgData.data);
+
+                    chain.next(colorData, {
+                        height: imgData.height,
+                        width: imgData.width,
+                        pix: options.char
+                    });
+                })
+                .then(_this.render.bind(_this))
                 .final(function () {
                     console.log('render compeleted!');
                 })
