@@ -28,11 +28,17 @@ var thumb = {
         }
         return imageData;
     },
-
+    /**
+     *  Thumb a image(ImageData) with raduis and width
+     **/
     thumbnailer: function(imgMeta, width, raidus, callback) {
-        thumb.data.src = JSON.parse(JSON.stringify(imgMeta));
 
-        thumb.data.img = JSON.parse(JSON.stringify(imgMeta));
+        if (width == imgMeta.width) {
+            callback(imgMeta);
+            return;
+        }
+
+        thumb.data.src = imgMeta;
 
         thumb.data.dest = {
             width: width,
@@ -53,10 +59,7 @@ var thumb = {
         thumb.data.center = {};
         thumb.data.icenter = {};
 
-        var _thumb = thumb;
-        setTimeout(function() {
-            _thumb.processImageData(_thumb.data, 0, callback);
-        }, 0);
+        thumb.processImageData(thumb.data, 0, callback);
             
     },
 
@@ -95,8 +98,8 @@ var thumb = {
                     if (data.cacheLanc[f_x][f_y] == undefined)
                         data.cacheLanc[f_x][f_y] = data.lanczos(Math.sqrt(Math.pow(f_x * data.rcp_ratio, 2) + Math.pow(f_y * data.rcp_ratio, 2)) / 1000);
 
-                    var weight = data.cacheLanc[f_x][f_y];
-
+                    weight = data.cacheLanc[f_x][f_y];
+                    // console.log(weight);
                     if (weight > 0) {
                         var idx = (j * data.src.width + i) * 4;
                         alpha += weight;
@@ -114,9 +117,9 @@ var thumb = {
         }
 
         if (++u < data.dest.width)
-            setTimeout(thumb.processImageData.bind(thumb), 0, data, u, callback);
+            thumb.processImageData(data, u, callback);
         else
-            setTimeout(thumb.responseImageData.bind(thumb), 0, data, callback);
+            thumb.responseImageData(data, callback);
     },
     responseImageData: function(data, callback) {
 
@@ -125,6 +128,8 @@ var thumb = {
             height: data.dest.height,
             width: data.dest.width
         };
+
+        // console.log(data.src.data.length);
 
         var idx, idx2;
         for (var i = 0; i < data.dest.width; i++) {
@@ -136,7 +141,6 @@ var thumb = {
                 data.src.data[idx2 + 2] = data.dest.data[idx + 2];
             }
         }
-
         callback(data.src);
 
     }.bind(thumb)

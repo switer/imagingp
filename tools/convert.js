@@ -68,14 +68,14 @@ var converter = {
             }))
             .on('parsed', function() {
                 var ctx = this;
+                
+                ctx.data = _this.png2jpeg(ctx.data);
 
                 Chain(function (chain) {
-                    // thumb.thumbnailer(ctx, 48, 5, function (data) {
                     thumb.thumbnailer(ctx, options.width || config.defaultWidth, 3, function (data) {
-                        // console.log(data)
+
                         chain.next(data);
                     });
-                    // chain.next(ctx);
                 })
                 .then(function (chain, imgData) {
 
@@ -84,12 +84,13 @@ var converter = {
                     chain.next(colorData, {
                         height: imgData.height,
                         width: imgData.width,
-                        pix: options.char
+                        pix: options.char,
+                        left: options.left
                     });
                 })
                 .then(_this.render.bind(_this))
                 .final(function () {
-                    console.log('render compeleted!');
+                    // console.log('render compeleted!');
                 })
                 .start();
 
@@ -117,9 +118,12 @@ var converter = {
                 blue = this.pick18Colors(imgData[index + 2], alpha);
 
             var grayColorKey = this.grayColor(
-                    this.rgba2rbg(oralR, alpha),
-                    this.rgba2rbg(oralG, alpha),
-                    this.rgba2rbg(oralB, alpha)
+                    // this.rgba2rbg(oralR, alpha),
+                    // this.rgba2rbg(oralG, alpha),
+                    // this.rgba2rbg(oralB, alpha)
+                    oralR,
+                    oralG,
+                    oralB
                 );
 
             if (grayColorKey) {
@@ -137,22 +141,20 @@ var converter = {
      *  render character image in terminal
      */
     render: function(chain, colors, options) {
-        
-        var line = this.repeat(' ', 0);
 
+        var line = this.repeat(' ', options.left);
         for (var i = 0; i < colors.length; i++) {
 
-            if (i % options.width !== 0) {
-                if (typeof(colors[i]) === 'string') {
-                    line += config.pix[colors[i]];
-                } else if (colors[i] instanceof Array) {
-                    line += config.pix[colors[i][0]][colors[i][1]];
-                }
-            } else {
-                // use console to show image pixel line
+            if (i !==0 && i % options.width === 0) {
                 console.log(line);
-                line = this.repeat(' ', 0);
+                var line = this.repeat(' ', options.left);
             }
+            if (typeof(colors[i]) === 'string') {
+                line += config.pix[colors[i]];
+            } else if (colors[i] instanceof Array) {
+                line += config.pix[colors[i][0]][colors[i][1]];
+            }
+
         }
         chain.next();
     },
@@ -202,6 +204,26 @@ var converter = {
             index++;
         }
         return ctn;
+    },
+    /**
+     *  reset pixel alpha value to 255
+     */
+    png2jpeg: function (imgData) {
+        var jpegImageData = [],
+            red, green, blue, alpha;
+        for (var i = 0; i < imgData.length; i+= 4) {
+            red = imgData[i];
+            green = imgData[i+1];
+            blue = imgData[i+2];
+            alpha = imgData[i+3]/255;
+            jpegImageData = jpegImageData.concat([
+                this.rgba2rbg(red, alpha), 
+                this.rgba2rbg(green, alpha), 
+                this.rgba2rbg(blue, alpha),
+                255
+            ]);
+        }
+        return jpegImageData;
     }
 };
 
