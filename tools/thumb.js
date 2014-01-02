@@ -17,32 +17,45 @@ var thumb = {
         }
     },
 
+    createImageDataArray: function (row, col, value) {
+        var imageData = [],
+            rowArray = [];
+        for (var i =0 ; i < row; i ++) {
+            rowArray = rowArray.concat([value, value, value, value]);
+        }
+        for (var i =0 ; i < col; i ++) {
+            imageData = imageData.concat(rowArray);
+        }
+        return imageData;
+    },
+
     thumbnailer: function(imgMeta, width, raidus, callback) {
+        thumb.data.src = JSON.parse(JSON.stringify(imgMeta));
 
-        this.data.src = imgMeta;
+        thumb.data.img = JSON.parse(JSON.stringify(imgMeta));
 
-        this.data.dest = {
+        thumb.data.dest = {
             width: width,
             height: Math.round(imgMeta.height * width / imgMeta.width),
         };
 
-        this.data.dest.data = new Array(this.data.dest.width * this.data.dest.height * 4);
+        thumb.data.dest.data = new Array(thumb.data.dest.width * thumb.data.dest.height * 3);
 
-        this.data.lanczos = this.lanczosCreate(raidus);
+        thumb.data.lanczos = thumb.lanczosCreate(raidus);
 
-        this.data.ratio = imgMeta.width / width;
+        thumb.data.ratio = imgMeta.width / width;
 
-        this.data.rcp_ratio = 2 / this.data.ratio;
+        thumb.data.rcp_ratio = 2 / thumb.data.ratio;
 
-        this.data.range2 = Math.ceil(this.data.ratio * raidus / 2);
+        thumb.data.range2 = Math.ceil(thumb.data.ratio * raidus / 2);
 
-        this.data.cacheLanc = {};
-        this.data.center = {};
-        this.data.icenter = {};
+        thumb.data.cacheLanc = {};
+        thumb.data.center = {};
+        thumb.data.icenter = {};
 
-        var _this = this;
+        var _thumb = thumb;
         setTimeout(function() {
-            _this.processImageData(_this.data, 0, callback);
+            _thumb.processImageData(_thumb.data, 0, callback);
         }, 0);
             
     },
@@ -61,7 +74,7 @@ var thumb = {
             var alpha, red, green, blue;
 
             alpha = red = green = blue = 0;
-            // alpha = 0.5;
+
             for (var i = data.icenter.x - data.range2; i <= data.icenter.x + data.range2; i++) {
 
                 if (i < 0 || i >= data.src.width)
@@ -93,23 +106,40 @@ var thumb = {
                     }
                 }
             }
-            var idx = (v * data.dest.width + u) * 4;
+            var idx = (v * data.dest.width + u) * 3;
 
-            data.dest.data[idx] = Math.ceil(red / alpha);
-            data.dest.data[idx + 1] = Math.ceil(green / alpha);
-            data.dest.data[idx + 2] = Math.ceil(blue / alpha);
-            // data.dest.data[idx + 3] = Math.ceil(alpha);
-            data.dest.data[idx + 3] = 255;
+            data.dest.data[idx] = red / alpha;
+            data.dest.data[idx + 1] = green / alpha;
+            data.dest.data[idx + 2] = blue / alpha;
         }
 
         if (++u < data.dest.width)
-            setTimeout(this.processImageData.bind(this), 0, data, u, callback);
+            setTimeout(thumb.processImageData.bind(thumb), 0, data, u, callback);
         else
-            setTimeout(this.responseImageData.bind(this), 0, data, callback);
+            setTimeout(thumb.responseImageData.bind(thumb), 0, data, callback);
     },
     responseImageData: function(data, callback) {
-        callback(data.dest);
-    }
+
+        data.src = {
+            data: thumb.createImageDataArray(data.dest.width, data.dest.height, 255),
+            height: data.dest.height,
+            width: data.dest.width
+        };
+
+        var idx, idx2;
+        for (var i = 0; i < data.dest.width; i++) {
+            for (var j = 0; j < data.dest.height; j++) {
+                idx = (j * data.dest.width + i) * 3;
+                idx2 = (j * data.dest.width + i) * 4;
+                data.src.data[idx2] = data.dest.data[idx];
+                data.src.data[idx2 + 1] = data.dest.data[idx + 1];
+                data.src.data[idx2 + 2] = data.dest.data[idx + 2];
+            }
+        }
+
+        callback(data.src);
+
+    }.bind(thumb)
 }
 
 

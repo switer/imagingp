@@ -12,6 +12,7 @@ var fs = require('fs'),
     color = require('colors'),
     Chain = require('chainjs'),
     thumb = require('./thumb'),
+    // thumb = require('./node-thumb'),
     PNG = require('pngjs').PNG;
 
 var config = {
@@ -69,10 +70,12 @@ var converter = {
                 var ctx = this;
 
                 Chain(function (chain) {
-                    // thumb.thumbnailer(ctx, 30, 4, function (data) {
-                    //     chain.next(data);
-                    // });
-                    chain.next(ctx);
+                    // thumb.thumbnailer(ctx, 48, 5, function (data) {
+                    thumb.thumbnailer(ctx, options.width || config.defaultWidth, 3, function (data) {
+                        // console.log(data)
+                        chain.next(data);
+                    });
+                    // chain.next(ctx);
                 })
                 .then(function (chain, imgData) {
 
