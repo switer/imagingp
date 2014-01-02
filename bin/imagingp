@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+var pkginfo = require('pkginfo'),
+    childProcess = require('child_process'),
+    program = require('commander'),
+    colors = require('colors'),
+    config = require('../config.js'),
+    converter = require('../tools/convert.js'),
+    util = require('../tools/util.js');
+
+program
+    .version(pkginfo.version)
+    .usage('<path> [options]')
+    .option('-c, --char <charater>', 'set the char as the pixels of image')
+    .option('-l, --left <left>', 'set the left position of image')
+    .option('-w, --width <width>', 'set the width to render the image in terminal')
+    .parse(process.argv);
+
+var imgURL = process.argv[2];
+
+if (!imgURL) {
+    console.log('Please give a correct image url !'.red)
+    return;
+} else {
+    imgURL = util.urlFixing(imgURL);
+}
+
+var options = util.setParams(program, {
+    char: config.char.default,
+    width: config.defaultWidth,
+    left: config.defaultLeft
+});
+
+converter.convert(imgURL, options)
