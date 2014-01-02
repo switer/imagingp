@@ -1,4 +1,4 @@
-imaging-png
+imagingp
 ===========
 
 imaging for png.

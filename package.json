@@ -1,14 +1,17 @@
 {
-  "name": "imaging-png",
+  "name": "imagingp",
   "version": "0.0.1",
   "description": "imaging for png",
   "main": "imaging-png.js",
   "scripts": {
     "test": "npm test"
   },
+  "bin": {
+    "imagingp": "bin/imaging"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/switer/imaging-png.git"
+    "url": "https://github.com/switer/imagingp.git"
   },
   "keywords": [
     "imaing",
@@ -20,7 +23,7 @@
   "author": "switer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/switer/imaging-png/issues"
+    "url": "https://github.com/switer/imagingp/issues"
   },
   "dependencies": {
     "colors": "~0.6.2",

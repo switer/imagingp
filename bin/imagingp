@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var pkginfo = require('pkginfo'),
+var pkginfo = require('../tools/pkginfo'),
     childProcess = require('child_process'),
     program = require('commander'),
     colors = require('colors'),
