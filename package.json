@@ -2,12 +2,12 @@
   "name": "imagingp",
   "version": "0.0.1",
   "description": "imaging for png",
-  "main": "imaging-png.js",
+  "main": "imagingp.js",
   "scripts": {
     "test": "npm test"
   },
   "bin": {
-    "imagingp": "bin/imaging"
+    "imagingp": "bin/imagingp"
   },
   "repository": {
     "type": "git",
