@@ -8,7 +8,17 @@ Usage like `imaging` but replace the command imaging of `imagingp`.
 
 [see imaging](https://github.com/switer/imaging#usage)
 
+## Testing
+Without using cli, use as nodejs module:
+```bash
+npm test
+```
+
 ## ChangeLog
+
+#### Version 0.0.2
+
+- [Feature] Node module api support, new `.draw()` api.
 
 #### Version 0.0.1-1
 

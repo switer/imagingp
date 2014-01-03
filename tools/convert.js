@@ -58,7 +58,7 @@ var converter = {
      *  Module enter API
      *  convert a image file to character string
      */
-    convert: function(file, options) {
+    convert: function(file, options, callback) {
 
         var _this = this;
         fs.createReadStream(file)
@@ -77,11 +77,7 @@ var converter = {
                 })
                 .then(function (chain, imgData) {
 
-                    
-
                     var colorData = _this.process(imgData.height, imgData.width, imgData.data);
-
-                    
 
                     chain.next(colorData, {
                         height: imgData.height,
@@ -93,6 +89,7 @@ var converter = {
                 .then(_this.render.bind(_this))
                 .final(function () {
                     // console.log('render compeleted!');
+                    callback && callback(true);
                 })
                 .start();
 

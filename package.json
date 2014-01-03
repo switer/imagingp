@@ -1,10 +1,10 @@
 {
   "name": "imagingp",
-  "version": "0.0.1-1",
+  "version": "0.0.2",
   "description": "imaging for png",
   "main": "imagingp.js",
   "scripts": {
-    "test": "npm test"
+    "test": "node test"
   },
   "bin": {
     "imagingp": "bin/imagingp"
