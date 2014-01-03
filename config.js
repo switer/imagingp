@@ -2,7 +2,7 @@ module.exports = {
     "defaultWidth": 40,
     "defaultLeft": 0,
     "char": {
-        "default": "▇",
+        "default": "█",
         "square": "▇",
         "circle": "●",
         "rectangle": "█"

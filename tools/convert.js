@@ -151,9 +151,9 @@ var converter = {
                 var line = this.repeat(' ', options.left);
             }
             if (typeof(colors[i]) === 'string') {
-                line += config.pix[colors[i]];
+                line += options.pix[colors[i]];
             } else if (colors[i] instanceof Array) {
-                line += config.pix[colors[i][0]][colors[i][1]];
+                line += options.pix[colors[i][0]][colors[i][1]];
             }
 
         }
