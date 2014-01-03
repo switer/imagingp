@@ -3,11 +3,10 @@ var converter = require('./tools/convert.js'),
     config = require('./config');
 
 module.exports = {
-    draw: function (path, options, callback) {
+    draw: function (path /*, options, callback*/) {
         var args = arguments,
-        src = args[0],
-        options = options || {},
-        callback = null;
+        options = {},
+        callback;
 
         var param2 = args[1];
 
@@ -16,9 +15,11 @@ module.exports = {
         } else if (typeof(param2) == 'object'){
             options = param2;
         }
-        if (!callback) callback = args[2];
+        if (!callback) {
+            callback = args[2];
+        }
 
-        var imgURL = src;
+        var imgURL = path;
         if (!imgURL) {
             console.log('Please give a correct image url !'.red)
             return;
