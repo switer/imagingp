@@ -61,7 +61,6 @@ var converter = {
     convert: function(file, options) {
 
         var _this = this;
-
         fs.createReadStream(file)
             .pipe(new PNG({
                 filterType: 4
@@ -73,13 +72,16 @@ var converter = {
 
                 Chain(function (chain) {
                     thumb.thumbnailer(ctx, options.width || config.defaultWidth, 3, function (data) {
-
                         chain.next(data);
                     });
                 })
                 .then(function (chain, imgData) {
 
+                    
+
                     var colorData = _this.process(imgData.height, imgData.width, imgData.data);
+
+                    
 
                     chain.next(colorData, {
                         height: imgData.height,
@@ -134,7 +136,6 @@ var converter = {
 
             colors.push(config.colorMap[colorKey]);
         }
-
         return colors;
     },
     /**
@@ -209,19 +210,20 @@ var converter = {
      *  reset pixel alpha value to 255
      */
     png2jpeg: function (imgData) {
-        var jpegImageData = [],
+        var jpegImageData = new Array(imgData.length),
             red, green, blue, alpha;
+
         for (var i = 0; i < imgData.length; i+= 4) {
             red = imgData[i];
             green = imgData[i+1];
             blue = imgData[i+2];
             alpha = imgData[i+3]/255;
-            jpegImageData = jpegImageData.concat([
-                this.rgba2rbg(red, alpha), 
-                this.rgba2rbg(green, alpha), 
-                this.rgba2rbg(blue, alpha),
-                255
-            ]);
+
+            jpegImageData[i] = this.rgba2rbg(red, alpha);
+            jpegImageData[i+1] = this.rgba2rbg(green, alpha);
+            jpegImageData[i+2] = this.rgba2rbg(blue, alpha);
+            jpegImageData[i+3] = 255;
+
         }
         return jpegImageData;
     }

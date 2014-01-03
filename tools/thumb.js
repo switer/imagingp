@@ -32,7 +32,6 @@ var thumb = {
      *  Thumb a image(ImageData) with raduis and width
      **/
     thumbnailer: function(imgMeta, width, raidus, callback) {
-
         if (width == imgMeta.width) {
             callback(imgMeta);
             return;
