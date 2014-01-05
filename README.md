@@ -1,6 +1,6 @@
 imagingp
 ===========
-Imaging for png. only support image type of png, but fast and neat.
+Imaging for png/jpg. only support image type of png/jpg, but fast and neat.
 
 ## Usage
 
