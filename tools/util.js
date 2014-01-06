@@ -1,3 +1,15 @@
+'use strict';
+var local = {
+
+    REMOTE: /http[s]*\:\/\//,
+    REMOTE_HTTP: /http\:\/\//,
+    REMOTE_HTTPS: /https\:\/\//,
+    LOCAL_WINDOWS: /[a-zA-Z]\:/,
+    LOCAL_UNIX: /^\//,
+    LOCAL_RELATVE: /^.+\//
+};
+
+
 module.exports = {
     /**
      *  @param configMap {char: config.char, width: config.defaultWidth, left: config.defaultLeft}
@@ -18,14 +30,35 @@ module.exports = {
      */
     urlFixing: function(url) {
 
-        if (url.match(/http[s]*\:\/\//)) {
+        if (local.REMOTE.exec(url)) {
+            // HTTP or HTTPS
             return url;
         }
-        else if (url.match(/[a-zA-Z]\:/) || url.match(/^\//)) {
+        else if (local.LOCAL_WINDOWS.exec(url) || local.LOCAL_UNIX.exec(url)) {
+            // Absolute path
             return url;
         }
         else {
+            // relative path
             return process.cwd().replace(/\/$/, '') + '/' + url;
+        }
+    },
+    /**
+     *  comment
+     **/
+    urlType: function (url) {
+        var type = {};
+        
+        if (local.REMOTE_HTTP.exec(url)) {
+            type.http =  true;
+        } else if (local.REMOTE_HTTPS.exec(url)) {
+            type.https = true;
+        } else if (local.LOCAL_WINDOWS.exec(url)) {
+            type.windows = true;
+        } else if (local.LOCAL_UNIX.exec(url)) {
+            type.unix = true;
+        } else if (local.LOCAL_RELATVE.exec(url)) {
+            type.relative = true;
         }
     }
 }

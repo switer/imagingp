@@ -12,12 +12,14 @@ var fs = require('fs'),
     color = require('colors'),
     Chain = require('chainjs'),
     thumb = require('./thumb'),
-    // thumb = require('./node-thumb'),
     PNG = require('pngjs').PNG;
 
 var config = {
+
     pix: '▇',
+
     defaultWidth: 40,
+
     colorMap: {
         /*normal*/
         '0,0,0': 'black',

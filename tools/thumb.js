@@ -1,3 +1,5 @@
+'use strict';
+
 var thumb = {
 
     data: {
@@ -144,6 +146,5 @@ var thumb = {
 
     }.bind(thumb)
 }
-
 
 module.exports = thumb;

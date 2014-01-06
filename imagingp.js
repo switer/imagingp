@@ -1,8 +1,11 @@
+'use strict';
+
 var converter = require('./tools/convert.js'),
     util = require('./tools/util'),
     config = require('./config');
 
 module.exports = {
+    
     draw: function (path /*, options, callback*/) {
         var args = arguments,
         options = {},

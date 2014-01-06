@@ -30,6 +30,7 @@
     "chainjs": "0.0.2",
     "pngjs": "~0.4.0",
     "pkginfo": "~0.3.0",
-    "commander": "~2.1.0"
+    "commander": "~2.1.0",
+    "request": "~2.30.0"
   }
 }
